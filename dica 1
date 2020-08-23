@@ -1,0 +1,7 @@
+echo "# desfio3" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/Noodle2012/desfio3.git
+git push -u origin master
+                
