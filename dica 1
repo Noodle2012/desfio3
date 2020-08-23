@@ -1,7 +1,26 @@
-echo "# desfio3" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git remote add origin https://github.com/Noodle2012/desfio3.git
-git push -u origin master
-                
+def get_transcript_ted(url):
+  if "ted" not in str(url):
+    raise Exception("URL Inválida")
+
+  response = requests.get(url)
+  soup = BeautifulSoup(response.content)
+  transcript = soup("div", {"class":"Grid Grid--with-gutter d:f@md p-b:4"})
+  texts = []
+  for div in transcript:
+    text = div("p")[0].text
+    text = text.strip()
+    text = text.replace("\n", " ")
+    text = text.replace("\t", " ")
+    text = re.sub(' +', ' ', text)
+    texts.append(text)
+  
+  _ = soup.title.text
+  author = _.split(":")[0].strip()
+  title = _.split(":")[1].split("|")[0].strip()
+  return {
+    "author": author,
+    "body": " ".join(texts),
+    "title": title,
+    "type": "video",
+    "url": url
+  }
